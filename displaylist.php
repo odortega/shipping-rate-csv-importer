@@ -24,6 +24,12 @@ if(isset($_POST['butimport'])){
     $bol_truncated = false; 
     // Read file
     while(($csvData = fgetcsv($csvFile,0,";")) !== FALSE){
+            if(!$bol_truncated){
+                echo("<p>Reemplazando tarifas</p>");
+                $wpdb->query("TRUNCATE TABLE $tablename"); 
+                $bol_truncated = true;
+            }
+
       //$csvData = array_map("utf8_encode", $csvData);
 
       //echo("<br>fetch row");
@@ -34,12 +40,13 @@ if(isset($_POST['butimport'])){
 
       //echo("<br>dataLen: " . $dataLen);
 
-      // Skip row if length != 3
-      if( !($dataLen == 3) ) continue;
+      // Skip row if length != 4
+      if( !($dataLen == 4) ) continue;
       // Assign value to variables
       $department = trim($csvData[0]);
       $citie = trim($csvData[1]);
-      $kg_rate = trim($csvData[2]);
+      $weight = trim($csvData[2]);
+      $kg_rate = trim($csvData[3]);
 
       // Check record already exists or not
       //$cntSQL = "SELECT count(*) as count FROM {$tablename} where department='".$department."'";
@@ -48,18 +55,12 @@ if(isset($_POST['butimport'])){
      // if($record[0]->count==0){
 
         // Check if variable is empty or not
-        if(!empty($department) && !empty($citie) && !empty($kg_rate) ) {
-            /*
-            if(!$bol_truncated){
-                echo("<p>Truncate</p>");
-                $wpdb->query("TRUNCATE TABLE $tablename"); 
-                $bol_truncated = true;
-            }*/
-
+        if(!empty($department) && !empty($citie) && !empty($weight) && !empty($kg_rate) ) {
           // Insert Record
           $wpdb->insert($tablename, array(
             'department' =>$department,
             'citie' =>$citie,
+            'weight' => $weight,
             'kg_rate' =>$kg_rate
           ));
 
@@ -96,7 +97,8 @@ if(isset($_POST['butimport'])){
      <th>Id</th>
      <th>Cód. Departamento</th>
      <th>Minicipio</th>
-     <th>Costo/Kg</th>
+     <th>Peso</th>
+     <th>Costo Envío</th>
    </tr>
    </thead>
    <tbody>
@@ -109,12 +111,14 @@ if(isset($_POST['butimport'])){
         $id = $entry->id;
         $department = $entry->department;
         $citie = $entry->citie;
+        $weight = $entry->weight;
         $kg_rate = $entry->kg_rate;
 
         echo "<tr>
         <td>".++$count."</td>
         <td>".$department."</td>
         <td>".$citie."</td>
+        <td>".$weight."</td>
         <td>".$kg_rate."</td>
         </tr>
         ";
