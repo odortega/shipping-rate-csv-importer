@@ -31,7 +31,7 @@ register_activation_hook( __FILE__, 'plugin_table' );
 
 // Add menu
 function plugin_menu() {
-   add_menu_page("Costos envío importar x peso y ciudad ", "Costos envío x peso importar","manage_options", "Tarifas de Envío por Peso y Ciudad", "displayList",plugins_url('/shipping-rate-csv-importer/images/shipping-rate-icon.png'));
+   add_menu_page("Costos envío importar x peso y ciudad ", "Costos envío x peso importar","manage_options", "Tarifas de Envío por Peso y Ciudad", "displayList",plugins_url('/shipping-rate-csv-importer/images/shipping-rate-icon-20-g.png'));
 }
 add_action("admin_menu", "plugin_menu");
 
@@ -71,4 +71,20 @@ function incloud_woocommerce_set_shipping_rate( $rates, $package ) {
        $rate->cost=$shipping_value;
    }
    return $rates;
+}
+
+add_filter( 'woocommerce_cart_shipping_method_full_label', 'bbloomer_add_0_to_shipping_label', 10, 2 );
+   
+function bbloomer_add_0_to_shipping_label( $label, $method ) {
+
+
+   
+// if shipping rate is 0, concatenate ": $0.00" to the label
+if ( ! ( $method->cost > 0 ) ) {
+$label = ' Envío gratis: ' . wc_price(0);
+} 
+ 
+// return original or edited shipping label
+return $label;
+ 
 }

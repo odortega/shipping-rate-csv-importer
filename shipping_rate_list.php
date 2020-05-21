@@ -46,6 +46,9 @@ if(isset($_POST['butimport'])){
       $citie = trim($csvData[1]);
       $weight = trim($csvData[2]);
       $kg_rate = trim($csvData[3]);
+      // if(!isset($kg_rate) || !empty($kg_rate) || $kg_rate == 0 ){
+      //   $kg_rate = 0;
+      // }
 
       // Check record already exists or not
       //$cntSQL = "SELECT count(*) as count FROM {$tablename} where department='".$department."'";
@@ -53,7 +56,7 @@ if(isset($_POST['butimport'])){
 
      // if($record[0]->count==0){
         // Check if variable is empty or not
-        if(!empty($department) && !empty($citie) && !empty($weight) && !empty($kg_rate) ) {
+        if(!empty($department) && !empty($citie) && !empty($weight)) {
           // Insert Record
           $wpdb->insert($tablename, array(
             'department' =>$department,
