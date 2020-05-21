@@ -31,14 +31,12 @@ register_activation_hook( __FILE__, 'plugin_table' );
 
 // Add menu
 function plugin_menu() {
-
-   add_menu_page("Costos envío x peso importar", "Costos envío x peso importar","manage_options", "shipping-rate-csv-importer", "displayList",plugins_url('/shipping-rate-csv-importer/img/icon.png'));
-
+   add_menu_page("Costos envío importar x peso y ciudad ", "Costos envío x peso importar","manage_options", "Tarifas de Envío por Peso y Ciudad", "displayList",plugins_url('/shipping-rate-csv-importer/images/shipping-rate-icon.png'));
 }
 add_action("admin_menu", "plugin_menu");
 
 function displayList(){
-   include "displaylist.php";
+   include "shipping_rate_list.php";
 }
 
 add_filter( 'woocommerce_package_rates', 'incloud_woocommerce_set_shipping_rate', 9999, 2 );
@@ -48,8 +46,6 @@ function incloud_woocommerce_set_shipping_rate( $rates, $package ) {
 
    $state_destination = $package['destination']['state'];
    $city_destination  = $package['destination']['city'];
-
-
 
    $tablename = $wpdb->prefix."shipping_kg_rate";
    $shipping_value = 0;    
@@ -69,17 +65,10 @@ function incloud_woocommerce_set_shipping_rate( $rates, $package ) {
      return false;
    }
 
-   //var_dump($shipping_value);
-   //die;
-
-
    // Loop through each shipping rate
    foreach ( $rates as $rate ) {
        // Set new rate cost
        $rate->cost=$shipping_value;
    }
-
-
-
    return $rates;
 }

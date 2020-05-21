@@ -31,7 +31,6 @@ if(isset($_POST['butimport'])){
             }
 
       //$csvData = array_map("utf8_encode", $csvData);
-
       //echo("<br>fetch row");
 
 
@@ -53,7 +52,6 @@ if(isset($_POST['butimport'])){
       //$record = $wpdb->get_results($cntSQL, OBJECT);
 
      // if($record[0]->count==0){
-
         // Check if variable is empty or not
         if(!empty($department) && !empty($citie) && !empty($weight) && !empty($kg_rate) ) {
           // Insert Record
@@ -68,17 +66,12 @@ if(isset($_POST['butimport'])){
             $totalInserted++;
           }
         }
-
       //}
-
     }
-    echo "<h3 style='color: green;'>Total record Inserted : ".$totalInserted."</h3>";
-
-
+    echo "<h3 style='color: green;'>Total registros importados : ".$totalInserted."</h3>";
   }else{
     echo "<h3 style='color: red;'>Extensión no valida.</h3>";
   }
-
 }
 
 ?>
@@ -96,7 +89,7 @@ if(isset($_POST['butimport'])){
    <tr>
      <th>Id</th>
      <th>Cód. Departamento</th>
-     <th>Minicipio</th>
+     <th>Municipio</th>
      <th>Peso</th>
      <th>Costo Envío</th>
    </tr>
@@ -124,7 +117,7 @@ if(isset($_POST['butimport'])){
         ";
      }
    }else{
-     echo "<tr><td colspan='5'>No se encontraron registros</td></tr>";
+     echo "<tr><td colspan='5'>No se encontraron tarifas</td></tr>";
   }
   ?>
   </tbody>
